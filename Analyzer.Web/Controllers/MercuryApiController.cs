@@ -10,9 +10,9 @@ namespace Analyzer.Web.Controllers
 {
     public class MercuryApiController : Controller
     {
-        public IActionResult Analyzer()
+        public IActionResult Index()
         {
-            return View("Analyzer");
+            return View();
         }
 
         public IActionResult Error()
