@@ -1,6 +1,6 @@
 using System;
 
-namespace Analyzer.Web.Models
+namespace Analyzer.Web.ViewModels
 {
     public class ErrorViewModel
     {
