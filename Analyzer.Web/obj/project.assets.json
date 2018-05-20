@@ -4746,6 +4746,16 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "Analyzer.Service/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Analyzer.Service.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Analyzer.Service.dll": {}
+        }
       }
     }
   },
@@ -12653,10 +12663,16 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "Analyzer.Service/1.0.0": {
+      "type": "project",
+      "path": "../Analyzer.Service/Analyzer.Service.csproj",
+      "msbuildProject": "../Analyzer.Service/Analyzer.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "Analyzer.Service >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.8",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
@@ -12690,7 +12706,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Service\\Analyzer.Service.csproj": {
+              "projectPath": "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Service\\Analyzer.Service.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
