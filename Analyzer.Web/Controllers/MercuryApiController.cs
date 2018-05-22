@@ -2,6 +2,7 @@
 using Analyzer.Service.Parsers;
 using Analyzer.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,11 +28,11 @@ namespace Analyzer.Web.Controllers
         public async Task<IActionResult> Index()
         {
             _parser.Parse("api.json");
-            _httpRequestController.AddContentTypeHeader();
+            _httpRequestController.AddContentTypeHeader("application/json");
             //TODO: Fix authorization. Header doesn't match the pattern
             _httpRequestController.AddAutorizationHeader(_parser.GetObject(_apiName));
-            string result = await _httpRequestController.Send();
-            return View();
+            JObject result = await _httpRequestController.Send();
+            return Json(result);
         }
 
         public IActionResult Error()

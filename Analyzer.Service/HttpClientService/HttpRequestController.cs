@@ -1,4 +1,5 @@
 ﻿using Analyzer.Service.Parsers;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -23,20 +24,23 @@ namespace Analyzer.Service.HttpClientService
             this._uri = uri;
         }
 
-        public void AddContentTypeHeader(/*string headerFieldName, string headerFieldValue*/)
+        public void AddContentTypeHeader(string contentType)
         {
-            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(contentType));
         }
 
         public void AddAutorizationHeader(string key)
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(key);
+            //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(key);
+            _httpClient.DefaultRequestHeaders.Add("x-api-key", key);
         }
 
-        public async Task<string> Send()
+        public async Task<JObject> Send()
         {
-            HttpResponseMessage response = await _httpClient.GetAsync(_uri);
-            return response.ToString();
+            var response = await _httpClient.GetAsync(_uri);
+            string content = await response.Content.ReadAsStringAsync();
+            JObject json = JObject.Parse(content);
+            return json;
         }
     }
 }
