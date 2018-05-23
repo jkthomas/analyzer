@@ -10,7 +10,7 @@ namespace Analyzer.Service.Parsers
     {
         public class Item
         {
-            public string mercury { get; set; }
+            public string Mercury { get; set; }
         }
         public Item OneItem { get; set; }
         
@@ -18,7 +18,7 @@ namespace Analyzer.Service.Parsers
         public string GetObject(string keyword)
         {
             //string value = this.Items.Find(key => key.Equals(keyword)).Value;
-            return this.OneItem.mercury;
+            return this.OneItem.Mercury;
         }
 
         public void Parse(string filename)

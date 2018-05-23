@@ -4756,6 +4756,16 @@
         "runtime": {
           "bin/placeholder/Analyzer.Service.dll": {}
         }
+      },
+      "Analyzer.Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v2.0",
+        "compile": {
+          "bin/placeholder/Analyzer.Utilities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Analyzer.Utilities.dll": {}
+        }
       }
     }
   },
@@ -12668,11 +12678,17 @@
       "type": "project",
       "path": "../Analyzer.Service/Analyzer.Service.csproj",
       "msbuildProject": "../Analyzer.Service/Analyzer.Service.csproj"
+    },
+    "Analyzer.Utilities/1.0.0": {
+      "type": "project",
+      "path": "../Analyzer.Utilities/Analyzer.Utilities.csproj",
+      "msbuildProject": "../Analyzer.Utilities/Analyzer.Utilities.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
       "Analyzer.Service >= 1.0.0",
+      "Analyzer.Utilities >= 1.0.0",
       "Microsoft.AspNetCore.All >= 2.0.8",
       "Microsoft.NETCore.App >= 2.0.0"
     ]
@@ -12709,6 +12725,9 @@
           "projectReferences": {
             "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Service\\Analyzer.Service.csproj": {
               "projectPath": "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Service\\Analyzer.Service.csproj"
+            },
+            "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Utilities\\Analyzer.Utilities.csproj": {
+              "projectPath": "D:\\Aplikacje\\VisualStudioProjects\\analyzer\\Analyzer.Utilities\\Analyzer.Utilities.csproj"
             }
           }
         }

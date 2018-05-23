@@ -1,5 +1,6 @@
 ﻿using Analyzer.Service.HttpClientService;
 using Analyzer.Service.Parsers;
+using Analyzer.Utilities.StaticContent;
 using Analyzer.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
@@ -22,14 +23,13 @@ namespace Analyzer.Web.Controllers
 
         public MercuryApiController()
         {
-            this._httpRequestController = new HttpRequestController(this._uri + "https://trackchanges.postlight.com/building-awesome-cms-f034344d8ed");
+            this._httpRequestController = new HttpRequestController(ApiUris.MercuryApiUri + "https://trackchanges.postlight.com/building-awesome-cms-f034344d8ed");
             this._parser = new JsonParser();
         }
         public async Task<IActionResult> Index()
         {
             _parser.Parse("api.json");
             _httpRequestController.AddContentTypeHeader("application/json");
-            //TODO: Fix authorization. Header doesn't match the pattern
             _httpRequestController.AddAutorizationHeader(_parser.GetObject(_apiName));
             JObject result = await _httpRequestController.Send();
             return Json(result);
