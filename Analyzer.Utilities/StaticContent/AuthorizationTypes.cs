@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Analyzer.Utilities.StaticContent
 {
-    public static class ApiUris
+    public static class AuthorizationTypes
     {
-        public const string MercuryApiUri = "https://mercury.postlight.com/parser?url=";
+        public const string xKey = "x-api-key";
     }
 }

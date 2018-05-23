@@ -9,5 +9,6 @@ namespace Analyzer.Utilities.ApiFactory
         public abstract string Uri { get; }
         public abstract string ContentType { get; }
         public abstract string ApiName { get; }
+        public abstract string AuthorizationType { get; }
     }
 }

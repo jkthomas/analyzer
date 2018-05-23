@@ -1,5 +1,7 @@
 ﻿using Analyzer.Service.HttpClientService;
 using Analyzer.Service.Parsers;
+using Analyzer.Utilities.ApiFactory;
+using Analyzer.Utilities.ApiFactory.Mercury;
 using Analyzer.Utilities.StaticContent;
 using Analyzer.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -16,21 +18,23 @@ namespace Analyzer.Web.Controllers
     public class MercuryApiController : Controller
     {
         private IParser<string> _parser;
+        private ApiFactory _apiFactory;
         private HttpRequestController _httpRequestController;
-        private string _uri = "https://mercury.postlight.com/parser?url=";
-        private string _contentType = "application/json";
-        private string _apiName = "mercury";
+
+        public string _userUrl = "https://trackchanges.postlight.com/building-awesome-cms-f034344d8ed";
 
         public MercuryApiController()
         {
-            this._httpRequestController = new HttpRequestController(ApiUris.MercuryApiUri + "https://trackchanges.postlight.com/building-awesome-cms-f034344d8ed");
+            _apiFactory = new MercuryApiFactory(ApiUris.MercuryApiUri + _userUrl, ContentTypes.Json, ApiNames.MercuryApiName, AuthorizationTypes.xKey);
+            this._httpRequestController = new HttpRequestController(_apiFactory.GetApi());
             this._parser = new JsonParser();
         }
+
         public async Task<IActionResult> Index()
         {
             _parser.Parse("api.json");
-            _httpRequestController.AddContentTypeHeader("application/json");
-            _httpRequestController.AddAutorizationHeader(_parser.GetObject(_apiName));
+            _httpRequestController.AddContentTypeHeader();
+            _httpRequestController.AddAutorizationHeader(_parser.GetObject(ApiNames.MercuryApiName));
             JObject result = await _httpRequestController.Send();
             return Json(result);
         }
