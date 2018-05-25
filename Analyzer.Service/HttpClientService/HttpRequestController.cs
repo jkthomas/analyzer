@@ -17,7 +17,14 @@ namespace Analyzer.Service.HttpClientService
 
         static HttpRequestController()
         {
-            _httpClient = new HttpClient();
+            //Stops usage of proxy to speed up async connection
+            HttpClientHandler httpHandler = new HttpClientHandler
+            {
+                Proxy = null,
+                UseProxy = false
+            };
+
+            _httpClient = new HttpClient(httpHandler);
         }
         public HttpRequestController(Api api)
         {
@@ -36,12 +43,11 @@ namespace Analyzer.Service.HttpClientService
             _httpClient.DefaultRequestHeaders.Add(_api.AuthorizationType, key);
         }
 
-        public async Task<JObject> Send()
+        public async Task<string> Send()
         {
             var response = await _httpClient.GetAsync(_api.Uri);
             string content = await response.Content.ReadAsStringAsync();
-            JObject json = JObject.Parse(content);
-            return json;
+            return content;
         }
     }
 }

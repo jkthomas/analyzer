@@ -1,0 +1,61 @@
+﻿@model List<Analyzer.Utilities.Models.ResponseModel>
+
+@{
+    ViewBag.Title = "Analyzed Content";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Title
+        </th>
+        <th>
+            Content
+        </th>
+        <th>
+            Author
+        </th>
+        <th>
+            Publish Date
+        </th>
+        <th>
+            Url
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Words
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.content)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.date_published)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.url)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.excerpt)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.word_count)
+            </td>
+        </tr>
+    }
+
+</table>
