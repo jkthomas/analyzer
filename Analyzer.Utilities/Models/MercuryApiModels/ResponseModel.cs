@@ -20,5 +20,6 @@ namespace Analyzer.Utilities.Models
         public string direction { get; set; }
         public int total_pages { get; set; }
         public int rendered_pages { get; set; }
+        public Dictionary<string, int> TagsOccurrences { get; set; }
     }
 }

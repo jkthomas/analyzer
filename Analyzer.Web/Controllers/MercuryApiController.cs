@@ -1,4 +1,5 @@
-﻿using Analyzer.Service.HttpClientService;
+﻿using Analyzer.Service.Counter;
+using Analyzer.Service.HttpClientService;
 using Analyzer.Service.Parsers;
 using Analyzer.Utilities.ApiFactory;
 using Analyzer.Utilities.ApiFactory.Mercury;
@@ -67,6 +68,11 @@ namespace Analyzer.Web.Controllers
             {
                 _viewModel.ResponseModels.Add(response);
             }
+
+            HtmlCounter counter = new HtmlCounter(_viewModel.ResponseModels.Last().content);
+            _viewModel.ResponseModels.Last().TagsOccurrences = new Dictionary<string, int>();
+            _viewModel.ResponseModels.Last().TagsOccurrences = counter.CountOccurrence();
+
             return View(_viewModel);
         }
 

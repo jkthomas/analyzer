@@ -32,6 +32,9 @@
             <th>
                 Words
             </th>
+            <th>
+                Tags
+            </th>
         </tr>
         <tr>
             <td>
@@ -54,6 +57,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.word_count)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TagsOccurrences)
             </td>
         </tr>
     </table>
