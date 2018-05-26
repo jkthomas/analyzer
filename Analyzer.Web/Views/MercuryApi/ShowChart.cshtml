@@ -1,0 +1,38 @@
+﻿@model Dictionary<string, int>
+
+@{
+    ViewBag.Title = "Analyzed Content";
+}
+
+<h2>Html tags statistics</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Tag Name
+        </th>
+        <th>
+            Number of occurrences
+        </th>
+        <th>
+            Percentage in all of occurrences
+        </th>
+    </tr>
+    @{
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value
+                </td>
+                <td>
+                    Percentage
+                </td>
+            </tr>
+        }
+
+    }
+</table>

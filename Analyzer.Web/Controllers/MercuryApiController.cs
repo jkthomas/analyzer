@@ -50,6 +50,10 @@ namespace Analyzer.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(UrlModel urlModel)
         {
+            if(urlModel.ProvidedUrl == null)
+            {
+                return View(_viewModel);
+            }
             _apiFactory = new MercuryApiFactory(ApiUris.MercuryApiUri + urlModel.ProvidedUrl, ContentTypes.Json, ApiNames.MercuryApiName, AuthorizationTypes.xKey);
             this._httpRequestController = new HttpRequestController(_apiFactory.GetApi());
 
@@ -82,13 +86,24 @@ namespace Analyzer.Web.Controllers
             return View("ShowContent", _viewModel);
         }
 
-        //[ValidateInput(false)]
-        [Produces("text/html")]
-        public string ShowHtml(string itemUrl)
+        public IActionResult ShowHtml(string itemUrl)
         {
-            string htmlContent = _viewModel.ResponseModels.Where(url => url.Equals(itemUrl)).ToString();
-            return htmlContent;
+            ResponseModel responseModel = _viewModel.ResponseModels.Where(obj => obj.url.Equals(itemUrl)).First();
+            string htmlContent = responseModel.content;
+            return new ContentResult()
+            {
+                Content = htmlContent,
+                ContentType = "text/html"
+            };
         }
+
+        public IActionResult ShowChart(string itemUrl)
+        {
+            ResponseModel responseModel = _viewModel.ResponseModels.Where(obj => obj.url.Equals(itemUrl)).First();
+            Dictionary<string, int> tags = responseModel.TagsOccurrences.Where(pair => pair.Value != 0).ToDictionary(k => k.Key, v => v.Value);
+            return View(tags);
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
