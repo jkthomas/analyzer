@@ -50,7 +50,7 @@ namespace Analyzer.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(UrlModel urlModel)
         {
-            if(urlModel.ProvidedUrl == null)
+            if (urlModel.ProvidedUrl == null)
             {
                 return View(_viewModel);
             }
@@ -99,9 +99,39 @@ namespace Analyzer.Web.Controllers
 
         public IActionResult ShowChart(string itemUrl)
         {
+            TagStatisticViewModel statisticViewModel = new TagStatisticViewModel();
             ResponseModel responseModel = _viewModel.ResponseModels.Where(obj => obj.url.Equals(itemUrl)).First();
-            Dictionary<string, int> tags = responseModel.TagsOccurrences.Where(pair => pair.Value != 0).ToDictionary(k => k.Key, v => v.Value);
-            return View(tags);
+            var tags = responseModel.TagsOccurrences.Where(pair => pair.Value != 0).ToDictionary(k => k.Key, v => v.Value).ToList();
+            tags.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
+            statisticViewModel.TagsCount = tags.Sum(element => element.Value);
+            try
+            {
+                foreach (var tag in tags.Skip(0).Take(10))
+                {
+                    statisticViewModel.TopTags.Add(tag);
+                }
+
+                foreach (var tag in tags.Skip(10))
+                {
+                    statisticViewModel.RestTags.Add(tag);
+                }
+            }
+            catch (Exception e)
+            {
+                if (statisticViewModel.TopTags.Count == 0)
+                {
+                    statisticViewModel.TopTags.Add(new KeyValuePair<string, int>("No tags to show", 0));
+                    statisticViewModel.RestTags.Add(new KeyValuePair<string, int>("No tags to show", 0));
+                }
+            }
+            finally
+            {
+                if(statisticViewModel.RestTags.Count == 0)
+                {
+                    statisticViewModel.RestTags.Add(new KeyValuePair<string, int>("No tags to show", 0));
+                }
+            }
+            return View(statisticViewModel);
         }
 
         public IActionResult Error()

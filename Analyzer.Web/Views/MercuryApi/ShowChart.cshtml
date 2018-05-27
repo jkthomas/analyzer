@@ -1,11 +1,12 @@
-﻿@model Dictionary<string, int>
+﻿@model Analyzer.Web.ViewModels.TagStatisticViewModel
 
 @{
     ViewBag.Title = "Analyzed Content";
 }
 
-<h2>Html tags statistics</h2>
+<h1>Html tags statistics</h1>
 
+<h4> 10 most used tags </h4>
 <table class="table">
     <tr>
         <th>
@@ -19,7 +20,7 @@
         </th>
     </tr>
     @{
-        foreach (var item in Model)
+        foreach (var item in Model.TopTags)
         {
             <tr>
                 <td>
@@ -29,7 +30,39 @@
                     @item.Value
                 </td>
                 <td>
-                    Percentage
+                    @(item.Value/Model.TagsCount*100) %
+                </td>
+            </tr>
+        }
+
+    }
+</table>
+
+<h4> Rest of tags used on analyzed site </h4>
+<table class="table">
+    <tr>
+        <th>
+            Tag Name
+        </th>
+        <th>
+            Number of occurrences
+        </th>
+        <th>
+            Percentage in all of occurrences
+        </th>
+    </tr>
+    @{
+        foreach (var item in Model.RestTags)
+        {
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value
+                </td>
+                <td>
+                    @(item.Value / Model.TagsCount * 100) %
                 </td>
             </tr>
         }
