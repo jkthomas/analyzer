@@ -39,7 +39,6 @@ namespace Analyzer.Service.HttpClientService
 
         public void AddAutorizationHeader(string key)
         {
-            //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(key);
             _httpClient.DefaultRequestHeaders.Add(_api.AuthorizationType, key);
         }
 

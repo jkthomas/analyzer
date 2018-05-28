@@ -26,8 +26,6 @@ namespace Analyzer.Web.Controllers
         private HttpRequestController _httpRequestController;
         private static AggregateModel _viewModel;
 
-        //public string _userUrl = "https://trackchanges.postlight.com/building-awesome-cms-f034344d8ed";
-
         static MercuryApiController()
         {
             _viewModel = new AggregateModel()
@@ -39,6 +37,7 @@ namespace Analyzer.Web.Controllers
         public MercuryApiController()
         {
             this._parser = new JsonParser();
+            _parser.Parse("api.json");
         }
 
         [HttpGet]
@@ -54,28 +53,29 @@ namespace Analyzer.Web.Controllers
             {
                 return View(_viewModel);
             }
-            _apiFactory = new MercuryApiFactory(ApiUris.MercuryApiUri + urlModel.ProvidedUrl, ContentTypes.Json, ApiNames.MercuryApiName, AuthorizationTypes.xKey);
+
+            this._apiFactory = new MercuryApiFactory(ApiUris.MercuryApiUri + urlModel.ProvidedUrl, ContentTypes.Json, ApiNames.MercuryApiName, AuthorizationTypes.xKey);
             this._httpRequestController = new HttpRequestController(_apiFactory.GetApi());
+            this._httpRequestController.AddContentTypeHeader();
+            this._httpRequestController.AddAutorizationHeader(_parser.GetObject(ApiNames.MercuryApiName));
 
-            _parser.Parse("api.json");
-            _httpRequestController.AddContentTypeHeader();
-            _httpRequestController.AddAutorizationHeader(_parser.GetObject(ApiNames.MercuryApiName));
             var result = await _httpRequestController.Send();
-            var response = JsonConvert.DeserializeObject<ResponseModel>(result);
 
+            var response = JsonConvert.DeserializeObject<ResponseModel>(result);
+            if (response.content == null)
+            {
+                TempData["Error"] = "Site is not available or doesn't exist";
+                return View(_viewModel);
+            }
             if (_viewModel.ResponseModels.Count == 5)
             {
                 _viewModel.ResponseModels.RemoveAt(0);
-                _viewModel.ResponseModels.Add(response);
             }
-            else
-            {
-                _viewModel.ResponseModels.Add(response);
-            }
+            _viewModel.ResponseModels.Insert(0, response);
 
             HtmlCounter counter = new HtmlCounter(_viewModel.ResponseModels.Last().content);
-            _viewModel.ResponseModels.Last().TagsOccurrences = new Dictionary<string, int>();
             _viewModel.ResponseModels.Last().TagsOccurrences = counter.CountOccurrence();
+
 
             return View(_viewModel);
         }
@@ -126,7 +126,7 @@ namespace Analyzer.Web.Controllers
             }
             finally
             {
-                if(statisticViewModel.RestTags.Count == 0)
+                if (statisticViewModel.RestTags.Count == 0)
                 {
                     statisticViewModel.RestTags.Add(new KeyValuePair<string, int>("No tags to show", 0));
                 }
